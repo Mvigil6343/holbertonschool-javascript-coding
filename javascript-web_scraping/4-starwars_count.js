@@ -1,4 +1,4 @@
-#!/root/.nvm/versions/node/v20.12.2/bin/node
+#!/usr/bin/node
 const request = require('request');
 const apiUrl = process.argv[2];
 const wedgeAntillesId = 18;
