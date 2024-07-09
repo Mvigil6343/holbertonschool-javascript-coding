@@ -1,20 +1,28 @@
-#!/usr/bin/node
+#!/root/.nvm/versions/node/v20.12.2/bin/node
 const request = require('request');
-
 const apiUrl = process.argv[2];
-
 const wedgeAntillesId = 18;
 
 request.get(apiUrl, (error, response, body) => {
   if (error) {
     console.error(error);
-  } else {
+    return;
+  }
+
+  try {
     const filmsData = JSON.parse(body);
+    const wedgeAntillesUrl = `https://swapi-api.hbtn.io/api/people/${wedgeAntillesId}/`;
 
-    const filmsWithWedgeAntilles = filmsData.results.filter((film) =>
-      film.characters.includes(`https://swapi-api.hbtn.io/api/people/${wedgeAntillesId}/`)
-    );
+    let count = 0;
 
-    console.log(filmsWithWedgeAntilles.length);
+    filmsData.results.forEach(film => {
+      if (film.characters.includes(wedgeAntillesUrl)) {
+        count++;
+      }
+    });
+
+    console.log(count);
+  } catch (parseError) {
+    console.error('Error parsing JSON:', parseError);
   }
 });
