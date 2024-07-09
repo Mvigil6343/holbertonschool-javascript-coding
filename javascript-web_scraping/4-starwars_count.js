@@ -1,28 +1,20 @@
 #!/usr/bin/node
 const request = require('request');
-const apiUrl = process.argv[2];
-const wedgeAntillesId = 18;
+const APIurl = process.argv[2];
+const characterId = '18';
 
-request.get(apiUrl, (error, response, body) => {
+request(APIurl, function (error, response, body) {
   if (error) {
-    console.error(error);
-    return;
+    console.log(error);
   }
-
-  try {
-    const filmsData = JSON.parse(body);
-    const wedgeAntillesUrl = `https://swapi-api.hbtn.io/api/people/${wedgeAntillesId}/`;
-
-    let count = 0;
-
-    filmsData.results.forEach(film => {
-      if (film.characters.includes(wedgeAntillesUrl)) {
-        count++;
+  const movie = JSON.parse(body);
+  let count = 0;
+  movie.results.forEach(element => {
+    element.characters.forEach(item => {
+      if (item.includes(characterId)) {
+        count += 1;
       }
     });
-
-    console.log(count);
-  } catch (parseError) {
-    console.error('Error parsing JSON:', parseError);
-  }
+  });
+  console.log(count);
 });
